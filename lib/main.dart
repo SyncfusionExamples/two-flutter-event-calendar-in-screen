@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 void main() => runApp(TwoCalendars());
 
@@ -12,14 +11,8 @@ class TwoCalendars extends StatefulWidget {
 }
 
 class TwoCalendarsState extends State<TwoCalendars> {
-  CalendarController _calendarController1, _calendarController2;
-
-  @override
-  void initState() {
-    _calendarController1 = CalendarController();
-    _calendarController2 = CalendarController();
-    super.initState();
-  }
+  CalendarController _calendarController1 = CalendarController();
+  CalendarController _calendarController2= CalendarController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,46 +20,46 @@ class TwoCalendarsState extends State<TwoCalendars> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
             body: SafeArea(
-          child: Column(
-            children: [
-              SfCalendar(
-                view: CalendarView.month,
-                controller: _calendarController1,
-                dataSource: _getDataSource(),
-                monthViewSettings: MonthViewSettings(
-                  navigationDirection: MonthNavigationDirection.vertical,
-                ),
-                onViewChanged: calendar1ViewChanged,
+              child: Column(
+                children: [
+                  SfCalendar(
+                    view: CalendarView.month,
+                    controller: _calendarController1,
+                    dataSource: _getDataSource(),
+                    monthViewSettings: MonthViewSettings(
+                      navigationDirection: MonthNavigationDirection.vertical,
+                    ),
+                    onViewChanged: calendar1ViewChanged,
+                  ),
+                  SfCalendar(
+                    view: CalendarView.month,
+                    controller: _calendarController2,
+                    viewHeaderHeight: 0,
+                    monthViewSettings: MonthViewSettings(
+                        navigationDirection: MonthNavigationDirection.vertical),
+                    dataSource: _getDataSource(),
+                    onViewChanged: calendar2ViewChanged,
+                  ),
+                ],
               ),
-              SfCalendar(
-                view: CalendarView.month,
-                controller: _calendarController2,
-                viewHeaderHeight: 0,
-                monthViewSettings: MonthViewSettings(
-                    navigationDirection: MonthNavigationDirection.vertical),
-                dataSource: _getDataSource(),
-                onViewChanged: calendar2ViewChanged,
-              ),
-            ],
-          ),
-        )));
+            )));
   }
 
   void calendar1ViewChanged(ViewChangedDetails viewChangedDetails) {
-    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
+    SchedulerBinding.instance!.addPostFrameCallback((Duration duration) {
       _calendarController2.displayDate = DateTime(
-          _calendarController1.displayDate.year,
-          _calendarController1.displayDate.month + 1,
-          _calendarController1.displayDate.day);
+          _calendarController1.displayDate!.year,
+          _calendarController1.displayDate!.month + 1,
+          _calendarController1.displayDate!.day);
     });
   }
 
   void calendar2ViewChanged(ViewChangedDetails viewChangedDetails) {
-    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
+    SchedulerBinding.instance!.addPostFrameCallback((Duration duration) {
       _calendarController1.displayDate = DateTime(
-          _calendarController2.displayDate.year,
-          _calendarController2.displayDate.month - 1,
-          _calendarController2.displayDate.day);
+          _calendarController2.displayDate!.year,
+          _calendarController2.displayDate!.month - 1,
+          _calendarController2.displayDate!.day);
     });
   }
 
